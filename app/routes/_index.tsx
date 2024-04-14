@@ -83,7 +83,11 @@ export default function Index() {
         </Text>
         <Box mt="2">
           <Form method="POST">
-            <TextArea name="text" />
+            <TextArea
+              name="text"
+              rows={4}
+              placeholder="Введите фразу или предложение..."
+            />
             <Flex justify={"end"}>
               <Button type="submit" loading={isSubmitting} mt={"2"}>
                 <CheckIcon />
