@@ -38,7 +38,7 @@ export async function action({ request, context }: ActionFunctionArgs) {
 
   if (!text) {
     return json({
-      error: "Введите текст",
+      error: "Введите фразу или предложение",
       result: "",
     });
   }
