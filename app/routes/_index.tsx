@@ -31,7 +31,7 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-export async function action({ request }: ActionFunctionArgs) {
+export async function action({ request, context }: ActionFunctionArgs) {
   const formData = await request.formData();
   const text = String(formData.get("text"));
 
@@ -46,7 +46,7 @@ export async function action({ request }: ActionFunctionArgs) {
     "https://api-inference.huggingface.co/models/ai-forever/sage-fredt5-distilled-95m",
     {
       headers: {
-        Authorization: `Bearer ${process.env.HF_TOKEN}`,
+        Authorization: `Bearer ${context.cloudflare.env.HF_TOKEN}`,
       },
       method: "POST",
       body: JSON.stringify({ inputs: text }),
