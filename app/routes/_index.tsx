@@ -9,6 +9,7 @@ import {
   Heading,
   Link,
   Separator,
+  Skeleton,
   Text,
   TextArea,
 } from "@radix-ui/themes";
@@ -17,12 +18,12 @@ import {
   type ActionFunctionArgs,
   type MetaFunction,
 } from "@remix-run/cloudflare";
-import { Form, useActionData, useFetcher } from "@remix-run/react";
+import { Form, useActionData, useNavigation } from "@remix-run/react";
 import { useState } from "react";
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "Peshi – Помогатор по правописанию" },
+    { title: "Правописатор – Помогатор по правописанию" },
     {
       name: "description",
       content:
@@ -65,9 +66,11 @@ export async function action({ request, context }: ActionFunctionArgs) {
 }
 
 export default function Index() {
-  const fetcher = useFetcher();
   const actionData = useActionData<typeof action>();
-  const isReady = fetcher.state === "idle" && actionData;
+  const navigation = useNavigation();
+
+  const isSubmitting = navigation.state === "submitting";
+  const isReady = actionData;
 
   const [copied, setCopied] = useState("Скопировать");
 
@@ -82,7 +85,7 @@ export default function Index() {
           <Form method="POST">
             <TextArea name="text" />
             <Flex justify={"end"}>
-              <Button type="submit" mt={"2"}>
+              <Button type="submit" loading={isSubmitting} mt={"2"}>
                 <CheckIcon />
                 <Text>Исправить</Text>
               </Button>
@@ -92,7 +95,7 @@ export default function Index() {
 
         {isReady ? (
           <Box mt={"4"}>
-            {actionData?.error ? (
+            {actionData.error ? (
               <Callout.Root color="red">
                 <Callout.Icon>
                   <InfoCircledIcon />
@@ -101,32 +104,36 @@ export default function Index() {
               </Callout.Root>
             ) : null}
 
-            {actionData?.result ? (
+            {actionData.result ? (
               <Box>
-                <Heading size={"4"}>Без ошибок и с запятыми 👇</Heading>
-                <Flex direction={"column"} gap={"2"} mt="2">
-                  <Blockquote size={"3"}>{actionData?.result}</Blockquote>
-                  <Flex align={"center"} justify={"end"} gap={"2"}>
-                    <Button
-                      variant="soft"
-                      size={"2"}
-                      onClick={async () => {
-                        if (navigator.clipboard) {
-                          await navigator.clipboard.writeText(
-                            actionData.result,
-                          );
-                          setCopied("Скопировано");
-                          setTimeout(() => {
-                            setCopied("Скопировать");
-                          }, 3000);
-                        }
-                      }}
-                    >
-                      <CopyIcon />
-                      {copied}
-                    </Button>
+                <Skeleton loading={isSubmitting}>
+                  <Heading size={"4"}>Без ошибок и с запятыми 👇</Heading>
+                </Skeleton>
+                <Skeleton loading={isSubmitting}>
+                  <Flex direction={"column"} gap={"2"} mt="2">
+                    <Blockquote size={"3"}>{actionData?.result}</Blockquote>
+                    <Flex align={"center"} justify={"end"} gap={"2"}>
+                      <Button
+                        variant="soft"
+                        size={"2"}
+                        onClick={async () => {
+                          if (navigator.clipboard) {
+                            await navigator.clipboard.writeText(
+                              actionData.result,
+                            );
+                            setCopied("Скопировано");
+                            setTimeout(() => {
+                              setCopied("Скопировать");
+                            }, 3000);
+                          }
+                        }}
+                      >
+                        <CopyIcon />
+                        {copied}
+                      </Button>
+                    </Flex>
                   </Flex>
-                </Flex>
+                </Skeleton>
               </Box>
             ) : null}
           </Box>
