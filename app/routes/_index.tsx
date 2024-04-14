@@ -72,7 +72,7 @@ export default function Index() {
   const [copied, setCopied] = useState("Скопировать");
 
   return (
-    <Container size="1" height={"100vh"}>
+    <Container size="1" height={"100dvh"}>
       <Flex direction={"column"} height={"100%"} px="2" pt={"4"} pb={"2"}>
         <Heading>Правописатор</Heading>
         <Text>
