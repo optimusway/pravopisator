@@ -28,7 +28,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         />
         <meta
           property="og:image"
-          content="https://pravopisator.pages.dev/og.svg"
+          content="https://pravopisator.pages.dev/og.png"
         />
 
         <meta name="twitter:card" content="summary_large_image" />
@@ -47,7 +47,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         />
         <meta
           name="twitter:image"
-          content="https://pravopisator.pages.dev/og.svg"
+          content="https://pravopisator.pages.dev/og.png"
         />
 
         <Meta />
