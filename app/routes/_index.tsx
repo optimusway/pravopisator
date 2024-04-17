@@ -153,7 +153,9 @@ export default function Index() {
             <Separator orientation={"vertical"} mx={"2"} />
             <Text size={"2"}>
               Работает на{" "}
-              <Link href="https://github.com/ai-forever/sage">SAGE</Link>
+              <Link href="https://huggingface.co/ai-forever/sage-fredt5-distilled-95m">
+                sage-fredt5-distilled-95m
+              </Link>
             </Text>
           </footer>
         </Flex>
